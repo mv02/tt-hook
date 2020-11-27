@@ -5,7 +5,8 @@
   "main": "index.js",
   "dependencies": {
     "axios": "^0.21.0",
-    "chrome-remote-interface": "^0.28.2"
+    "chrome-remote-interface": "^0.28.2",
+    "emoji-regex": "^9.2.0"
   },
   "devDependencies": {},
   "scripts": {

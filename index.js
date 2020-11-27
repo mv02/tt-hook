@@ -2,6 +2,7 @@ const CDP = require('chrome-remote-interface');
 const axios = require('axios');
 const fs = require('fs');
 const { options, servers, customEmojis, webhook } = require('./config.json');
+const emojiRegex = require('emoji-regex/RGI_Emoji.js');
 
 let server;
 
@@ -37,6 +38,13 @@ function formatAndSend(raw) {
   msg = msg.replace(/\^[0-9a-z*]/g, '');
   // odstran \s s\, \a a\, \r r\ u emojis ID
   msg = msg.replace(/\\[a-z!]/g, '').replace(/[a-z!]\\/g, '');
+
+  // escapni normalni emoji v prefixu a jmene - win10 namisto discordovych
+  let emojis = [...new Set(msg.split(':')[0].match(emojiRegex()) || [])];
+  for (let emoji of emojis) {
+    let regex = new RegExp(emoji, 'g');
+    msg = msg.replace(regex, '\\' + emoji);
+  }
 
   // nahrad emoji IDs discordovymi custom emojis
   for (let [key, value] of Object.entries(customEmojis)) {
