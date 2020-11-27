@@ -1,3 +1,5 @@
+sendServerAddress(serverAddress);
+
 document.querySelector('body iframe[name=chat]').contentWindow.addEventListener('message', event => {
     if (event.data.type == 'ON_MESSAGE') {
         let msgObject = event.data.message;
@@ -14,7 +16,7 @@ document.querySelector('body iframe[name=chat]').contentWindow.addEventListener(
         msg = msg.replace(/\^[0-9a-z*]/g, '');
         // odstran \s s\, \a a\, \r r\ u emojis ID
         msg = msg.replace(/\\[a-z!]/g, '').replace(/[a-z!]\\/g, '');
-        
+
         sendMessage(msg);
     }
     else console.log(event.data.type, 'event');

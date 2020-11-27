@@ -1,7 +1,9 @@
 const CDP = require('chrome-remote-interface');
 const axios = require('axios');
 const fs = require('fs');
-const { options, customEmojis, webhook } = require('./config.json');
+const { options, servers, customEmojis, webhook } = require('./config.json');
+
+let server;
 
 CDP(options, async (client) => {
   console.log('Connected!');
@@ -16,10 +18,15 @@ CDP(options, async (client) => {
         msg = msg.replace(regex, value);
       }
 
-      axios.post(webhook, { content: `\`[${new Date().toLocaleTimeString('cs')}]\` ${msg}` });
+      axios.post(webhook, { content: `\`[${new Date().toLocaleTimeString('cs')}]\` \`[${server}]\` ${msg}` });
+    }
+    else if (event.name == 'sendServerAddress') {
+      console.log('[Address received]', event.payload);
+      server = servers[event.payload];
     }
   });
 
+  await client.Runtime.addBinding({ name: 'sendServerAddress' }).then(console.log('Address binding created')).catch(e => console.log(e));
   await client.Runtime.addBinding({ name: 'sendMessage' }).then(console.log('Message binding created')).catch(e => console.log(e));
 
   await client.Runtime.evaluate({ expression: fs.readFileSync('./evaluate.js', 'utf-8') }).then(ret => console.log('Script evaluated', ret)).catch(e => console.log(e));
