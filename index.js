@@ -18,6 +18,12 @@ CDP(options, async (client) => {
         msg = msg.replace(regex, value);
       }
 
+      // projdi vsechny URL http nebo https
+      let urls = msg.match(/(http|https):\/\/[0-9a-z./-?&]*/gi) || [];
+      for (let url of urls) {
+        msg = msg.replace(url, '`' + url + '`');
+      }
+
       axios.post(webhook, { content: `\`[${new Date().toLocaleTimeString('cs')}]\` \`[${server}]\` ${msg}` });
     }
     else if (event.name == 'sendServerAddress') {
