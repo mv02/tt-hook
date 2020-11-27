@@ -41,7 +41,13 @@ function formatAndSend(raw) {
   // projdi vsechny URL http nebo https
   let urls = msg.match(/(http|https):\/\/[0-9a-z./-?&]*/gi) || [];
   for (let url of urls) {
-    msg = msg.replace(url, '`' + url + '`');
+    // emoji obrazek - nahrad Unicode kodem
+    if (url.startsWith('https://github.githubassets.com/images/icons/emoji/unicode')) {
+      let code = url.match(/\w*\.png/g)[0].replace('.png', '');
+      msg = msg.replace(url, String.fromCodePoint('0x' + code));
+    }
+    // bezna URL - dej do codeblocku aby neslo klikat
+    else msg = msg.replace(url, '`' + url + '`');
   }
 
   console.log('[Message]', msg);
