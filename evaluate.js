@@ -8,6 +8,11 @@ document.querySelector('body iframe[name=chat]').contentWindow.addEventListener(
         else if (msgObject.channel.includes('system')) msg = msgObject.args[0];
         else msg = msgObject.args.join(' ');
 
+        // odstran color kody ^1 ^2...
+        msg = msg.replace(/\^[0-9a-z*]/g, '');
+        // odstran \s s\, \a a\, \r r\ u emojis ID
+        msg = msg.replace(/\\[a-z!]/g, '').replace(/[a-z!]\\/g, '');
+        
         sendMessage(msg);
     }
     else console.log(event.data.type, 'event');
