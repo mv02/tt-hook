@@ -7,6 +7,12 @@ let server;
 
 CDP(options, async (client) => {
   console.log('Connected!');
+  axios.post(webhook, { content: '**Listening for messages!**' });
+
+  client.on('disconnect', () => {
+    console.log('Disconnected!');
+    axios.post(webhook, { content: '**Disconnected.**' });
+  });
 
   client.Runtime.bindingCalled(event => {
     if (event.name == 'sendMessage') formatAndSend(event.payload);
