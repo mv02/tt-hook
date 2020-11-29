@@ -13,6 +13,12 @@ document.querySelector('body iframe[name=chat]').contentWindow.addEventListener(
             else if (/company|faction|dispatch/g.test(msgObject.channel)) msg = '**' + msgObject.args[0] + '**: ' + msgObject.args[1];
             else msg = msgObject.args.join(' ');
         }
+        else if (msgObject.templateId != undefined) {
+            if (msgObject.templateId == 'atc-takeoff') msg = msgObject.args[0] + ' ATC: ' + msgObject.args[1] + ' is preparing takeoff from runway ' + msgObject.args[2];
+            else if (msgObject.templateId == 'atc-landing') msg = msgObject.args[0] + ' ATC: ' + msgObject.args[1] + ' is preparing to land on runway ' + msgObject.args[2];
+            else msg = msgObject.args.join(' ');
+        }
+        else msg = msgObject.args.join(' ');
 
         sendMessage(msg);
     }
