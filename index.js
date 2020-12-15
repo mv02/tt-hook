@@ -5,14 +5,17 @@ const { options, servers, customEmojis, webhook } = require('./config.json');
 const emojiRegex = require('emoji-regex/RGI_Emoji.js');
 
 let server;
+let messages = [];
 
 CDP(options, async (client) => {
   console.log('Connected!');
   axios.post(webhook, { content: '**Listening for messages!**' });
 
   client.on('disconnect', () => {
-    console.log('Disconnected!');
-    axios.post(webhook, { content: '**Disconnected.**' });
+    axios.post(webhook, { content: messages.join('\n') }).then(() => {
+      console.log('Disconnected!');
+      axios.post(webhook, { content: '**Disconnected.**' });
+    });
   });
 
   client.Runtime.bindingCalled(event => {
@@ -65,5 +68,12 @@ function formatAndSend(raw) {
   }
 
   console.log('[Message]', msg);
-  axios.post(webhook, { content: `\`[${new Date().toLocaleTimeString('cs')}]\` \`[${server}]\` ${msg}` });
+  messages.push(`\`[${new Date().toLocaleTimeString('cs')}]\` \`[${server}]\` ${msg}`);
+  let toSend = [];
+  if (messages.length == 5) {
+    for (let i = 0; i < 5; i++) {
+      toSend.push(messages.shift());
+    }
+    axios.post(webhook, { content: toSend.join('\n') }).then(toSend = []).catch(e => console.log(e));
+  }
 }
