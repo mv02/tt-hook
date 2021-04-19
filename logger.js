@@ -13,9 +13,9 @@ module.exports = class Logger {
 
     insertEmojis(string) {
         // unicode
-        let urls = string.match(/(http|https):\/\/[0-9a-z./-?&]*/gi) || [];
+        let urls = string.match(/\\!.*!\\/g) || [];
         for (let url of urls) {
-          if (url.startsWith('https://github.githubassets.com/images/icons/emoji/unicode')) {
+          if (url.includes('https://github.githubassets.com/images/icons/emoji/unicode')) {
             let code = url.match(/\w*\.png/g)[0].replace('.png', '');
             string = string.replace(url, String.fromCodePoint('0x' + code));
           }
