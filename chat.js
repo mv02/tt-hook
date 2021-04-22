@@ -42,7 +42,7 @@ module.exports = class ChatLogger extends Logger {
     }
 
     assembleDiscordMessage({ args }, type) {
-        args = args.map(item => this.removeColorCodes(this.escapeMarkdown(item)));
+        args = args.map(item => this.escapeMarkdown(this.removeColorCodes(item)));
         switch (type) {
             case 'atc-landing':
                 return `${args[0]} ATC: ${args[1]} is preparing to land on runway ${args[2]}`;
