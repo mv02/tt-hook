@@ -45,9 +45,9 @@ module.exports = class ChatLogger extends Logger {
         args = args.map(item => this.escapeMarkdown(this.removeColorCodes(item)));
         switch (type) {
             case 'atc-landing':
-                return `${args[0]} ATC: ${args[1]} is preparing to land on runway ${args[2]}`;
+                return `${args[0]} ATC: ${this.escapeEmojis(args[1])} is preparing to land on runway ${args[2]}`;
             case 'atc-takeoff':
-                return `${args[0]} ATC: ${args[1]} is preparing takeoff from runway ${args[2]}`;
+                return `${args[0]} ATC: ${this.escapeEmojis(args[1])} is preparing takeoff from runway ${args[2]}`;
             case 'radio':
                 return `${args[0]}: ${args[1]}`;
             case 'leveling':
