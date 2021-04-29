@@ -11,6 +11,10 @@ module.exports = class Logger {
         return string.replace(/\^[0-9a-z*]/g, '');
     }
 
+    removeHTML(string) {
+        return string.replace(/<[^<>]*>/g, '');
+    }
+
     insertEmojis(string) {
         // unicode
         let urls = string.match(/\\!.*!\\/g) || [];
