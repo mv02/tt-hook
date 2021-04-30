@@ -13,11 +13,11 @@ module.exports = class DiscordSender {
         }
     }
 
-    sendMessage(logger, message) {
+    sendMessage(logger, message, ...embeds) {
         return new Promise(resolve => {
             this.timeout(this.webhooks[logger].ratelimitRemaining == 0 ? this.webhooks[logger].ratelimitResetAfter + 1000 : 0)
             .then(() => {
-                axios.post(this.webhooks[logger].webhook, { content: message })
+                axios.post(this.webhooks[logger].webhook, { content: message, embeds: embeds })
                 .then(res => {
                     this.webhooks[logger].ratelimitRemaining = res.headers['x-ratelimit-remaining'];
                     this.webhooks[logger].ratelimitResetAfter = res.headers['x-ratelimit-reset-after'] * 1000;
