@@ -6,11 +6,11 @@ module.exports = class ChatLogger extends Logger {
 
     constructor(runtime, discord, server) {
         super(discord, server);
-        runtime.addBinding({ name: 'utilsChatMessage' })
+        runtime.addBinding({ name: 'tthookChatMessage' })
         .then(() => this.log('Binding created'));
         runtime.evaluate({ expression: `
         document.querySelector('iframe[name=chat]').contentWindow.addEventListener('message', event => {
-            if (event.data.type == 'ON_MESSAGE') utilsChatMessage(JSON.stringify(event.data.message));
+            if (event.data.type == 'ON_MESSAGE') tthookChatMessage(JSON.stringify(event.data.message));
         });
         ` })
         .then(() => this.log('Event listener created'));

@@ -13,11 +13,11 @@ CDP(options)
 
     client.Runtime.bindingCalled(async event => {
         switch (event.name) {
-            case 'utilsChatMessage':
+            case 'tthookChatMessage':
                 await chat.handleCall(event.payload);
                 break;
 
-            case 'utilsTransaction':
+            case 'tthookTransaction':
                 await transactions.handleCall(event.payload);
                 break;
 

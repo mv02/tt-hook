@@ -6,11 +6,11 @@ module.exports = class TransactionsLogger extends Logger {
 
     constructor(runtime, discord, server) {
         super(discord, server);
-        runtime.addBinding({ name: 'utilsTransaction' })
+        runtime.addBinding({ name: 'tthookTransaction' })
         .then(() => this.log('Binding created'));
         runtime.evaluate({ expression: `
         document.querySelector('iframe[name=vrp]').contentWindow.addEventListener('message', event => {
-            if (event.data.text != undefined) utilsTransaction(JSON.stringify(event.data));
+            if (event.data.text != undefined) tthookTransaction(JSON.stringify(event.data));
         });
         ` })
         .then(() => this.log('Event listener created'));
