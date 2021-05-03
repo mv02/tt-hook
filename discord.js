@@ -5,6 +5,7 @@ module.exports = class DiscordSender {
 
     constructor(loggers) {
         for (let logger of loggers) {
+            if (!logger.enabled) continue;
             this.webhooks[logger.name] = {
                 webhook: logger.webhook,
                 ratelimitRemaining: 5,

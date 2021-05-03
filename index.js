@@ -8,17 +8,30 @@ CDP(options)
 .then(client => {
     console.log(`CDP:  Connected to ${options.tab}`);
     const discord = new DiscordSender(loggers);
-    const chat = new ChatLogger(client.Runtime, discord, null);
-    const transactions = new TransactionsLogger(client.Runtime, discord, null);
+
+    const activeLoggers = {};
+    for (let logger of loggers) {
+        if (!logger.enabled) continue;
+        let loggerInstance;
+        switch (logger.name) {
+            case 'chat':
+                loggerInstance = new ChatLogger(client.Runtime, discord, null);
+                break;
+            case 'transactions':
+                loggerInstance = new TransactionsLogger(client.Runtime, discord, null);
+                break;
+        }
+        activeLoggers[logger.name] = loggerInstance;
+    }
 
     client.Runtime.bindingCalled(async event => {
         switch (event.name) {
             case 'tthookChatMessage':
-                await chat.handleCall(event.payload);
+                await activeLoggers.chat.handleCall(event.payload);
                 break;
 
             case 'tthookTransaction':
-                await transactions.handleCall(event.payload);
+                await activeLoggers.transactions.handleCall(event.payload);
                 break;
 
             default:
@@ -28,15 +41,13 @@ CDP(options)
     });
 
     client.once('disconnect', () => {
-        chat.forceSend();
-        transactions.forceSend();
+        for (let key of Object.keys(activeLoggers)) activeLoggers[key].forceSend();
         console.log('CDP:  Disconnected');
     });
 
     for (let sig of ['SIGINT', 'SIGHUP']) {
         process.on(sig, async () => {
-            await chat.forceSend();
-            await transactions.forceSend();
+            for (let key of Object.keys(activeLoggers)) await activeLoggers[key].forceSend();
             process.exit();
         });
     }
