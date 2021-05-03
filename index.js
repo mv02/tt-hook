@@ -29,6 +29,7 @@ CDP(options)
 
     client.once('disconnect', () => {
         chat.forceSend();
+        transactions.forceSend();
         console.log('CDP:  Disconnected');
     });
 
