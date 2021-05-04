@@ -45,7 +45,7 @@ module.exports = class TransactionsLogger extends Logger {
                 clearTimeout(transaction.timeout);
                 type == 'in' ? transaction.in.push(item) : transaction.out.push(item);
                 transaction.timestamp = new Date();
-                transaction.timeout = setTimeout(this.sendTransaction.bind(this), 30000);
+                transaction.timeout = setTimeout(this.sendTransaction.bind(this), this.options.timeout * 1000);
                 return;
             }
         }
@@ -54,7 +54,7 @@ module.exports = class TransactionsLogger extends Logger {
             in: type == 'in' ? [item] : [],
             out: type == 'out' ? [item] : [],
             timestamp: new Date(),
-            timeout: setTimeout(this.sendTransaction.bind(this), 30000),
+            timeout: setTimeout(this.sendTransaction.bind(this), this.options.timeout * 1000),
         });
     }
 

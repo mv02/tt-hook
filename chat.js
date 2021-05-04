@@ -20,12 +20,13 @@ module.exports = class ChatLogger extends Logger {
         return new Promise(resolve => {
             let messageObject = JSON.parse(payload);
             let type = this.getMessageType(messageObject);
+            if (this.options.ignoredTypes.includes(type)) return;
             let message = this.assembleDiscordMessage(messageObject, type);
             this.log(`Received a ${type} message: ${message.substr(0, 150)}${message.length > 150 ? ' ...' : ''}`);
             this.chatMessages.push(this.getDiscordMessagePrefix() + message);
-            if (this.chatMessages.length >= 5) {
+            if (this.chatMessages.length >= this.options.bufferSize) {
                 let toSend = [];
-                for (let i = 0; i < 5; i++) toSend.push(this.chatMessages.shift());
+                for (let i = 0; i < this.options.bufferSize; i++) toSend.push(this.chatMessages.shift());
                 this.discord.sendMessage('chat', toSend.join('\n'))
                 .then(() => resolve());
             }
