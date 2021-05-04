@@ -15,10 +15,10 @@ CDP(options)
         let loggerInstance;
         switch (logger.name) {
             case 'chat':
-                loggerInstance = new ChatLogger(client.Runtime, discord, null);
+                loggerInstance = new ChatLogger(client.Runtime, discord, null, logger.options);
                 break;
             case 'transactions':
-                loggerInstance = new TransactionsLogger(client.Runtime, discord, null);
+                loggerInstance = new TransactionsLogger(client.Runtime, discord, null, logger.options);
                 break;
         }
         activeLoggers[logger.name] = loggerInstance;

@@ -4,8 +4,8 @@ module.exports = class TransactionsLogger extends Logger {
     prefix = 'Transactions:';
     transactions = [];
 
-    constructor(runtime, discord, server) {
-        super(discord, server);
+    constructor(runtime, discord, server, options) {
+        super(discord, server, options);
         runtime.addBinding({ name: 'tthookTransaction' })
         .then(() => this.log('Binding created'));
         runtime.evaluate({ expression: `

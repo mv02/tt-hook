@@ -4,8 +4,8 @@ module.exports = class ChatLogger extends Logger {
     prefix = 'Chat:';
     chatMessages = [];
 
-    constructor(runtime, discord, server) {
-        super(discord, server);
+    constructor(runtime, discord, server, options) {
+        super(discord, server, options);
         runtime.addBinding({ name: 'tthookChatMessage' })
         .then(() => this.log('Binding created'));
         runtime.evaluate({ expression: `

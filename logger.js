@@ -2,9 +2,10 @@ const emojiRegex = require('emoji-regex/RGI_Emoji.js');
 const { customEmojis, markdownCharacters } = require('./config.json');
 
 module.exports = class Logger {
-    constructor(discord, server) {
+    constructor(discord, server, options) {
         this.discord = discord;
         this.server = server;
+        this.options = options;
     }
     
     removeColorCodes(string) {
