@@ -1,8 +1,9 @@
 const CDP = require('chrome-remote-interface');
+const fs = require('fs');
 const DiscordSender = require('./discord.js');
 const ChatLogger = require('./chat.js');
 const TransactionsLogger = require('./transactions.js');
-const { options, loggers } = require('./config.json');
+const { options, loggers, extensions } = require('./config.json');
 
 CDP(options)
 .then(client => {
@@ -22,6 +23,13 @@ CDP(options)
                 break;
         }
         activeLoggers[logger.name] = loggerInstance;
+    }
+
+    for (let extension of extensions) {
+        if (!extension.enabled) continue;
+        let script = fs.readFileSync(`./extensions/${extension.name}.js`).toString();
+        client.Runtime.evaluate({ expression: script })
+        .then(() => console.log(`DOM:  Extension ${extension.name.replace('.js', '')} injected`));
     }
 
     client.Runtime.bindingCalled(async event => {
