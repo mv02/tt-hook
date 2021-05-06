@@ -1,7 +1,7 @@
 {
   "name": "tt-hook",
   "version": "1.0.0",
-  "description": "",
+  "description": "Simple logging app for Transport Tycoon",
   "main": "index.js",
   "dependencies": {
     "axios": "^0.21.0",
@@ -13,6 +13,14 @@
     "config": "copy config.default.json config.json",
     "shortcut": "assets\\create-shortcut.bat"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "MV",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mv02/tt-hook.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mv02/tt-hook/issues"
+  },
+  "homepage": "https://github.com/mv02/tt-hook#readme"
 }
