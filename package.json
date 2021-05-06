@@ -10,7 +10,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "config": "copy config.default.json config.json"
+    "config": "copy config.default.json config.json",
+    "shortcut": "assets\\create-shortcut.bat"
   },
   "author": "",
   "license": "ISC"
