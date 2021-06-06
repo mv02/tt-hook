@@ -15,9 +15,14 @@ class BusinessTimerExtension {
 
     getNextCollectionTime() {
         let now = new Date();
+        let nextCollectionDate = now.getUTCDate();
         let nextCollectionHour = Math.round((now.getUTCHours() + 2) / 3) * 3;
-        if (nextCollectionHour >= 24) nextCollectionHour = 0;
+        if (nextCollectionHour >= 24) {
+            nextCollectionHour = 0;
+            nextCollectionDate++;
+        }
         let nextCollection = now;
+        nextCollection.setUTCDate(nextCollectionDate);
         nextCollection.setUTCHours(nextCollectionHour);
         nextCollection.setUTCMinutes(0);
         nextCollection.setUTCSeconds(0);
